@@ -8,8 +8,8 @@ public class WWElementORGate extends WWElement {
     @Override
     public String toString() {
         if (isReversed) {
-            return "ORGate " + row + " " + column + " " + "reversed";
+            return "ORGate " + row + " " + column + " " + "Reversed";
         } else
-            return "ORGate " + row + " " + column + " " + "normal";
+            return "ORGate " + row + " " + column + " " + "Normal";
     }
 }

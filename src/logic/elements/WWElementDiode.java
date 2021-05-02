@@ -8,8 +8,8 @@ public class WWElementDiode extends WWElement {
     @Override
     public String toString() {
         if (isReversed) {
-            return "Diode " + row + " " + column + " " + "reversed";
+            return "Diode " + row + " " + column + " " + "Reversed";
         } else
-            return "Diode " + row + " " + column + " " + "normal";
+            return "Diode " + row + " " + column + " " + "Normal";
     }
 }

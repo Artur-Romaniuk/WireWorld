@@ -11,8 +11,6 @@ public abstract class WWElement {
         this.isReversed = isReversed;
     }
 
-    public String toString() {
-        return "xD";
-    }
+
 
 }

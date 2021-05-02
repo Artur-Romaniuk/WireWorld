@@ -8,8 +8,8 @@ public class WWElementANDGate extends WWElement {
     @Override
     public String toString() {
         if (isReversed) {
-            return "ANDGate " + row + " " + column + " " + "reversed";
+            return "ANDGate " + row + " " + column + " " + "Reversed";
         } else
-            return "ANDGate " + row + " " + column + " " + "normal";
+            return "ANDGate " + row + " " + column + " " + "Normal";
     }
 }
