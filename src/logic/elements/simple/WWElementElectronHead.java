@@ -1,8 +1,10 @@
-package logic.elements;
+package logic.elements.simple;
+
+import logic.elements.WWElement;
 
 public class WWElementElectronHead extends WWElement {
     public WWElementElectronHead(int row, int column) {
-        super(row, column, false);
+        super(row, column);
     }
 
     @Override

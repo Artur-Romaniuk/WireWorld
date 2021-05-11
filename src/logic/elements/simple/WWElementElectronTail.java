@@ -1,8 +1,10 @@
-package logic.elements;
+package logic.elements.simple;
+
+import logic.elements.WWElement;
 
 public class WWElementElectronTail extends WWElement {
     public WWElementElectronTail(int row, int column) {
-        super(row, column, false);
+        super(row, column);
     }
 
     @Override

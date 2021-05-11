@@ -1,4 +1,4 @@
-package logic;
+package logic.exceptions;
 
 public class UnknownWWElementNameException extends IllegalArgumentException {
     public UnknownWWElementNameException(String msg) {
