@@ -2,12 +2,18 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUI {
 
     private JFrame frame;
     private JPanel mainPanel;
-    private JPanel ControlPanel;
+    private JPanel controlPanel;
+    private JPanel boardPanel;
+
+    private List<JButton> jButtonList; //this is where jbuttons are stored, so you can change their properties later
 
 
     private JButton startButton;
@@ -38,15 +44,21 @@ public class GUI {
         mainPanel.setLayout(new BorderLayout());
 
         showControlPanel();
-        mainPanel.add(ControlPanel, BorderLayout.EAST);
+        mainPanel.add(controlPanel, BorderLayout.NORTH);
+
+        showWWBoard(10);
+        mainPanel.add(boardPanel, BorderLayout.CENTER);
+
+        jButtonList.get(0).setBackground(Color.ORANGE);
+        jButtonList.get(1).setBackground(Color.RED);
 
         frame.setVisible(true);
     }
 
     private void showControlPanel(){
-        ControlPanel = new JPanel();
-        ControlPanel.setLayout(new FlowLayout());
-        ControlPanel.setMaximumSize(new Dimension(width/4, height));
+        controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout());
+        controlPanel.setMaximumSize(new Dimension(width/2, height));
 
         startButton = new JButton("Start");
         saveButton = new JButton("Save");
@@ -58,12 +70,35 @@ public class GUI {
 
         terminalTextField = new JTextField("Terminal", 15);
 
-        ControlPanel.add(startButton, BorderLayout.EAST);
-        ControlPanel.add(saveButton, BorderLayout.EAST);
-        ControlPanel.add(setNumberOfIterationsTextField, BorderLayout.EAST);
-        ControlPanel.add(drawButton, BorderLayout.EAST);
-        ControlPanel.add(openFileButton, BorderLayout.EAST);
-        ControlPanel.add(terminalTextField, BorderLayout.EAST);
+        controlPanel.add(startButton, BorderLayout.EAST);
+        controlPanel.add(saveButton, BorderLayout.EAST);
+        controlPanel.add(setNumberOfIterationsTextField, BorderLayout.EAST);
+        controlPanel.add(drawButton, BorderLayout.EAST);
+        controlPanel.add(openFileButton, BorderLayout.EAST);
+        controlPanel.add(terminalTextField, BorderLayout.EAST);
+    }
+
+    private void showWWBoard(int boardSize){
+        boardPanel = new JPanel();
+        boardPanel.setLayout(new GridLayout(10,10));
+       // boardPanel.setSize(650,650);
+        //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
+        boardPanel.setVisible(true);
+
+        Color blackColor = Color.BLACK;
+        JButton gridButton = null;
+        jButtonList = new ArrayList<JButton>();
+
+        for(int i = 0; i< boardSize*boardSize; i++)
+        {
+            gridButton = new JButton();
+            gridButton.setBackground(blackColor);
+            gridButton.setPreferredSize(new Dimension(10,10));
+            gridButton.setBorderPainted(true);
+            gridButton.setRolloverEnabled(false);
+            jButtonList.add(gridButton);
+            boardPanel.add(gridButton);
+        }
     }
 
 
