@@ -152,9 +152,23 @@ public class Parser {
             public void actionPerformed(ActionEvent e) {
                 WWElementGroup group = analizeText(area.getText());
                 out.setText("");
-                for (WWElement entity : group) {
-                    out.append(entity.toString()+"\n");
+                for (WWElement entity : group.getElectronHeadList()) {
+                    out.append(entity.toString() + "\n");
                 }
+                for (WWElement entity : group.getElectronTailList()) {
+                    out.append(entity.toString() + "\n");
+                }
+                for (WWElement entity : group.getElemList()) {
+                    out.append(entity.toString() + "\n");
+                }
+                for (WWElement entity : group.getAllConductorList()) {
+                    out.append(entity.toString() + "\n");
+                }
+
+                out.append("MinRow: " + group.getMinRow() + "\n");
+                out.append("MaxRow: " + group.getMaxRow() + "\n");
+                out.append("MinCol: " + group.getMinColumn() + "\n");
+                out.append("MaxCol: " + group.getMaxColumn() + "\n");
             }
         });
 
