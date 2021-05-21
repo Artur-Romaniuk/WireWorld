@@ -1,4 +1,4 @@
-import gui.GUI;
+import gui.*;
 
 public class WireWorld {
 
