@@ -40,8 +40,10 @@ public class WWElementGroup {
             allConductorList.addAll(((WWComplexElement) element).getConductors());
         } else if (element instanceof WWElementElectronHead) {
             electronHeadList.add((WWElementElectronHead) element);
+            conductorList.add(new WWElementConductor(element.getRow(),element.getColumn()));
         } else if (element instanceof WWElementElectronTail) {
             electronTailList.add((WWElementElectronTail) element);
+            conductorList.add(new WWElementConductor(element.getRow(),element.getColumn()));
         } else if (element instanceof WWElementConductor) {
             conductorList.add((WWElementConductor) element);
             allConductorList.add((WWElementConductor) element);
