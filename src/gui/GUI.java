@@ -2,12 +2,13 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GUI {
-
     private JFrame frame;
     private JPanel mainPanel;
     private JPanel controlPanel;
@@ -47,13 +48,14 @@ public class GUI {
         showControlPanel();
         mainPanel.add(controlPanel, BorderLayout.EAST);
 
-        showWWBoard(10);
+        showWWBoard(100);
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         jButtonList.get(0).setBackground(Color.ORANGE);
         jButtonList.get(1).setBackground(Color.RED);
 
         frame.setVisible(true);
+        frame.pack();
     }
 
     private void showControlPanel() {
@@ -75,6 +77,12 @@ public class GUI {
         setNumberOfIterationsTextField = new JSpinner(values);
 
         drawButton = new JButton("Draw");
+        drawButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         openFileButton = new JButton("Open file");
 
         terminalTextArea = new JTextArea("Terminal",22,15);
@@ -139,10 +147,12 @@ public class GUI {
 
     private void showWWBoard(int boardSize) {
         boardPanel = new JPanel();
-        boardPanel.setLayout(new GridLayout(10, 10));
+        JPanel bombGrid = new JPanel();
+        boardPanel.add(bombGrid);
+        bombGrid.setLayout(new GridLayout(100, 100));
         // boardPanel.setSize(650,650);
         //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
-        boardPanel.setVisible(true);
+        bombGrid.setVisible(true);
 
         Color blackColor = Color.BLACK;
         JButton gridButton = null;
@@ -151,11 +161,11 @@ public class GUI {
         for (int i = 0; i < boardSize * boardSize; i++) {
             gridButton = new JButton();
             gridButton.setBackground(blackColor);
-            gridButton.setPreferredSize(new Dimension(10, 10));
-            gridButton.setBorderPainted(true);
+            gridButton.setPreferredSize(new Dimension(9, 9));
+            gridButton.setBorderPainted(false);
             gridButton.setRolloverEnabled(false);
             jButtonList.add(gridButton);
-            boardPanel.add(gridButton);
+            bombGrid.add(gridButton);
         }
     }
 

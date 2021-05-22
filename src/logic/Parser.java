@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 
 public class Parser {
 
-    public static WWElementGroup analizeText(String text) {    //główna metoda, zwraca listę WWElement z rzeczami do narysowania
+    public static WWElementGroup analyzeText(String text) {    //główna metoda, zwraca listę WWElement z rzeczami do narysowania
         WWElementGroup group = new WWElementGroup();
         String[] lines = text.split("\n");
         for (String line : lines) {
@@ -150,7 +150,7 @@ public class Parser {
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WWElementGroup group = analizeText(area.getText());
+                WWElementGroup group = analyzeText(area.getText());
                 out.setText("");
                 for (WWElement entity : group.getElectronHeadList()) {
                     out.append(entity.toString() + "\n");
