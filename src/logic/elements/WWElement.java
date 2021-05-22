@@ -17,4 +17,11 @@ public abstract class WWElement {
         return this.column;
     }
 
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
 }

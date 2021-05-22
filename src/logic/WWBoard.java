@@ -1,47 +1,47 @@
 package logic;
 
-import java.util.ArrayList;
-import java.util.List;
+import logic.elements.simple.WWElementConductor;
+import logic.elements.simple.WWElementElectronHead;
+
+import java.util.LinkedList;
 
 import static java.lang.Math.abs;
 
 public class WWBoard {
     private int [][]board;
-    private final int boardSize = 10;
-    private List<Integer> electronList;
-    private List<Integer> nextGenElectronList;
-    private List<Integer> conductorList;
-    private int electronX;
-    private int electronY;
-    private int conductorX;
-    private int conductorY;
+    private final int boardSize;
+    private LinkedList<WWElementElectronHead> nextGenElectronList;
+    private WWElementGroup elementGroup;
 
-    public WWBoard(){
+    private WWElementElectronHead electron;
+    private WWElementConductor conductor;
+
+
+    public WWBoard(WWElementGroup elementGroup, int boardSize){
+        this.boardSize = boardSize;
         board = new int[boardSize][boardSize];
-        electronList = new ArrayList<Integer>();
-        conductorList = new ArrayList<Integer>();
+        this.elementGroup = elementGroup;
     }
 
     public void update(){
-        nextGenElectronList = new ArrayList<Integer>();
-        for(int i=0; i<electronList.size(); i++) {
-            electronX=electronList.get(i);
-            electronY=electronList.get(i++);
-            findProperConductors(electronX, electronY);
-            board[electronX][electronY] = 3; //ogon
+        nextGenElectronList = new LinkedList<WWElementElectronHead>();
+        for(int i=0; i<elementGroup.getElectronHeadList().size(); i++) {  //przejście po całej liście głów elektronów
+            electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn()); //X i Y elektronu z listy
+            electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
+            findProperConductors(electron.getColumn(), electron.getRow()); //znajdź nowe miejsce na planszy
+            board[electron.getColumn()][electron.getRow()] = 3; //ta glowa staje się ogonem
         }
-        electronList=nextGenElectronList;
+        elementGroup.setElectronHeadList(nextGenElectronList);  //zamiana starej listy na nową
     }
 
     private void findProperConductors(int electronX, int electronY) {
-        for(int i=0; i<conductorList.size(); i++){
-            conductorX=conductorList.get(i);
-            conductorY=conductorList.get(i++);
-            if(abs(electronX-conductorX)<2 || abs(electronY-conductorY)<2){
-                if(countElectrons(conductorX, conductorY)<3){
-                    board[conductorX][conductorY] = 2; //głowa
-                    nextGenElectronList.add(conductorX);
-                    nextGenElectronList.add(conductorY);
+        for(int i=0; i<elementGroup.getAllConductorList().size(); i++){ //przejście po wszystkich przewodnikach
+            conductor.setColumn(elementGroup.getAllConductorList().get(i).getColumn()); //x i y przewodnika
+            conductor.setRow(elementGroup.getAllConductorList().get(i).getRow());
+            if(abs(electronX-conductor.getColumn())<2 || abs(electronY-conductor.getRow())<2){ //jeżeli sąsiadują
+                if(countElectrons(conductor.getColumn(), conductor.getRow())<3 && board[conductor.getColumn()][conductor.getRow()]==1){
+                    board[conductor.getColumn()][conductor.getRow()] = 2; //głowa
+                    nextGenElectronList.add(new WWElementElectronHead(conductor.getColumn(),conductor.getRow()));
                 }
             }
         }
@@ -49,28 +49,14 @@ public class WWBoard {
 
     private int countElectrons(int conductorX, int conductorY) {
         int electronCount=0;
-        for(int i=0; i<electronList.size(); i++) {
-            electronX=electronList.get(i);
-            electronY=electronList.get(i++);
-            if(abs(electronX-conductorX)<2 || abs(electronY-conductorY)<2){
+        for(int i=0; i<elementGroup.getElectronHeadList().size(); i++) {
+            electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn());
+            electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
+            if(abs(electron.getColumn()-conductorX)<2 || abs(electron.getRow()-conductorY)<2){
                 electronCount++;
             }
         }
         return  electronCount;
     }
 
-    public void setTestValues(){
-        board[2][1]=1;
-        board[2][2]=2;
-        board[2][3]=3;
-    }
-
-    public void displayBoardInTerminal(){
-        for(int i=0; i<boardSize; i++){
-            for(int j=0; j<boardSize; j++){
-                System.out.print(board[i][j]);
-            }
-            System.out.println();
-        }
-    }
 }
