@@ -101,6 +101,10 @@ public class WWElementGroup {
         return electronHeadList;
     }
 
+    public void setElectronHeadList(LinkedList<WWElementElectronHead> electronHeadList) {
+        this.electronHeadList = electronHeadList;
+    }
+
     public LinkedList<WWElementElectronTail> getElectronTailList() {
         return electronTailList;
     }
