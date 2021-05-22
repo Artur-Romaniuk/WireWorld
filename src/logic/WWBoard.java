@@ -21,6 +21,9 @@ public class WWBoard {
         this.boardSize = boardSize;
         board = new int[boardSize][boardSize];
         this.elementGroup = elementGroup;
+        for (WWElementConductor conductor:elementGroup.getAllConductorList()) {
+            board[conductor.getColumn()][conductor.getRow()] = 1;
+        }
     }
 
     public void update(){
