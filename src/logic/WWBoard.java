@@ -2,6 +2,7 @@ package logic;
 
 import logic.elements.simple.WWElementConductor;
 import logic.elements.simple.WWElementElectronHead;
+import logic.elements.simple.WWElementElectronTail;
 
 import java.util.LinkedList;
 
@@ -25,6 +26,12 @@ public class WWBoard {
         this.elementGroup = elementGroup;
         for (WWElementConductor conductor : elementGroup.getAllConductorList()) {
             board[conductor.getColumn()][conductor.getRow()] = 1;
+        }
+        for (WWElementElectronHead electronHead:elementGroup.getElectronHeadList()) {
+            board[electronHead.getColumn()][electronHead.getRow()] = 2;
+        }
+        for (WWElementElectronTail electronTail:elementGroup.getElectronTailList()) {
+            board[electronTail.getColumn()][electronTail.getRow()] = 3;
         }
     }
 
