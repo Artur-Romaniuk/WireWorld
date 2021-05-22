@@ -1,5 +1,9 @@
 package gui;
 
+import logic.WWController;
+import logic.WWElementGroup;
+import logic.elements.simple.WWElementConductor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +34,13 @@ public class GUI {
     private int width;
     private int height;
 
-    public GUI() {
+    private int boardSize;
+
+    WWController controller;
+
+    public GUI(WWController controller, int boarSize) {
+        this.boardSize = boarSize;
+        this.controller = controller;
         size = Toolkit.getDefaultToolkit().getScreenSize();
         width = (int) size.getWidth();
         height = (int) size.getHeight();
@@ -48,7 +58,7 @@ public class GUI {
         showControlPanel();
         mainPanel.add(controlPanel, BorderLayout.EAST);
 
-        showWWBoard(100);
+        showWWBoard();
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         jButtonList.get(0).setBackground(Color.ORANGE);
@@ -70,22 +80,30 @@ public class GUI {
         controlSubPanel1.setLayout(new GridBagLayout());
         controlSubPanel2.setLayout(new GridBagLayout());
 
+        SpinnerModel values = new SpinnerNumberModel(1, 0, 99999, 1);
+        setNumberOfIterationsTextField = new JSpinner(values);
+
         startButton = new JButton("Start");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.iterate((int)setNumberOfIterationsTextField.getValue());
+            }
+        });
         saveButton = new JButton("Save");
 
-        SpinnerModel values = new SpinnerNumberModel(1,0,99999,1);
-        setNumberOfIterationsTextField = new JSpinner(values);
+
 
         drawButton = new JButton("Draw");
         drawButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                controller.generateBoard(terminalTextArea.getText());
             }
         });
         openFileButton = new JButton("Open file");
 
-        terminalTextArea = new JTextArea("Terminal",22,15);
+        terminalTextArea = new JTextArea("Terminal", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -145,11 +163,11 @@ public class GUI {
 
     }
 
-    private void showWWBoard(int boardSize) {
+    private void showWWBoard() {
         boardPanel = new JPanel();
         JPanel bombGrid = new JPanel();
         boardPanel.add(bombGrid);
-        bombGrid.setLayout(new GridLayout(100, 100));
+        bombGrid.setLayout(new GridLayout(boardSize, boardSize));
         // boardPanel.setSize(650,650);
         //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
         bombGrid.setVisible(true);
@@ -167,6 +185,11 @@ public class GUI {
             jButtonList.add(gridButton);
             bombGrid.add(gridButton);
         }
+    }
+
+    public void drawBoard(WWElementGroup group) {
+        int val;
+
     }
 
 
