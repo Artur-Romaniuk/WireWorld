@@ -50,7 +50,7 @@ public class WWBoard {
             nextGenElectronTailList.add(new WWElementElectronTail(electron.getRow(), electron.getColumn()));
         }
         for (WWElementElectronTail electron:elementGroup.getElectronTailList()) {
-            board[electron.getRow()][electron.getColumn()]=1;
+            board[electron.getColumn()][electron.getRow()]=1;
         }
 
         elementGroup.setElectronTailList(nextGenElectronTailList);
