@@ -87,11 +87,10 @@ public class GUI {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.iterate((int)setNumberOfIterationsTextField.getValue());
+                controller.iterate((int) setNumberOfIterationsTextField.getValue());
             }
         });
         saveButton = new JButton("Save");
-
 
 
         drawButton = new JButton("Draw");
@@ -187,9 +186,22 @@ public class GUI {
         }
     }
 
-    public void drawBoard(WWElementGroup group) {
+    public void drawBoard(int[][] board) {
         int val;
-
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                val = board[j][i];
+                if (val == 0) {
+                jButtonList.get(i*boardSize+j).setBackground(Color.BLACK);
+                } else if (val == 1) {
+                    jButtonList.get(i*boardSize+j).setBackground(Color.ORANGE);
+                } else if (val == 2) {
+                    jButtonList.get(i*boardSize+j).setBackground(Color.BLUE);
+                } else if (val == 3) {
+                    jButtonList.get(i*boardSize+j).setBackground(Color.RED);
+                }
+            }
+        }
     }
 
 

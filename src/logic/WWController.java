@@ -12,22 +12,29 @@ public class WWController implements Runnable {
     private boolean isIterating;
 
     public WWController() {
-        boardSize=10;
+        boardSize = 100;
         gui = new GUI(this, boardSize);
     }
 
     public void generateBoard(String input) {
 
-        board = new WWBoard(this, Parser.analyzeText(input),  boardSize);
-        gui.drawBoard(group);
+        board = new WWBoard(this, Parser.analyzeText(input), boardSize);
+        gui.drawBoard(board.getBoard());
     }
 
     @Override
     public void run() {
         isIterating = true;
         for (int i = 0; i < iterationsToDo; i++) {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //board.drawBoard();
             board.update();
-            gui.drawBoard(group);
+
+            gui.drawBoard(board.getBoard());
         }
         isIterating = false;
     }

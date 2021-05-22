@@ -33,6 +33,8 @@ public class WWBoard {
         for (WWElementElectronTail electronTail:elementGroup.getElectronTailList()) {
             board[electronTail.getColumn()][electronTail.getRow()] = 3;
         }
+        electron = new WWElementElectronHead(0,0);
+        conductor = new WWElementConductor(0,0);
     }
 
     public void update() {
@@ -71,5 +73,16 @@ public class WWBoard {
         return electronCount;
     }
 
+    public int [][] getBoard(){
+        return board;
+    }
 
+    public void drawBoard(){
+        for(int i=0;i<boardSize;i++){
+            for(int j=0;j<boardSize;j++){
+                System.out.print(board[j][i]+" ");
+            }
+            System.out.print("\n");
+        }
+    }
 }
