@@ -1,17 +1,10 @@
-import gui.*;
-import logic.Parser;
-import logic.WWBoard;
-import logic.WWElementGroup;
-
-import java.lang.reflect.Parameter;
+import logic.WWController;
 
 public class WireWorld {
 
-    public WWElementGroup elementGroup;
-
-    public static void main(String[] args){
-        GUI gui = new GUI();
-        WWBoard board = new WWBoard(Parser.analizeText("Diode 1 1"), 100);
+    public static void main(String[] args) {
+        WWController game = new WWController();
 
     }
+
 }

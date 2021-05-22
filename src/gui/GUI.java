@@ -1,19 +1,18 @@
 package gui;
 
-import io.WWIO;
+import logic.WWController;
+import logic.WWElementGroup;
+import logic.elements.simple.WWElementConductor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GUI {
-
     private JFrame frame;
     private JPanel mainPanel;
     private JPanel controlPanel;
@@ -35,7 +34,13 @@ public class GUI {
     private int width;
     private int height;
 
-    public GUI() {
+    private int boardSize;
+
+    WWController controller;
+
+    public GUI(WWController controller, int boarSize) {
+        this.boardSize = boarSize;
+        this.controller = controller;
         size = Toolkit.getDefaultToolkit().getScreenSize();
         width = (int) size.getWidth();
         height = (int) size.getHeight();
@@ -53,13 +58,14 @@ public class GUI {
         showControlPanel();
         mainPanel.add(controlPanel, BorderLayout.EAST);
 
-        showWWBoard(10);
+        showWWBoard();
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         jButtonList.get(0).setBackground(Color.ORANGE);
         jButtonList.get(1).setBackground(Color.RED);
 
         frame.setVisible(true);
+        frame.pack();
     }
 
     private void showControlPanel() {
@@ -74,36 +80,29 @@ public class GUI {
         controlSubPanel1.setLayout(new GridBagLayout());
         controlSubPanel2.setLayout(new GridBagLayout());
 
-        startButton = new JButton("Start");
-        saveButton = new JButton("Save");
-
-        SpinnerModel values = new SpinnerNumberModel(1,0,99999,1);
+        SpinnerModel values = new SpinnerNumberModel(1, 0, 99999, 1);
         setNumberOfIterationsTextField = new JSpinner(values);
 
-        drawButton = new JButton("Draw");
-        openFileButton = new JButton("Open file");
-        openFileButton.addActionListener(new ActionListener() {
+        startButton = new JButton("Start");
+        startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        List<String> fileText = WWIO.readFileAndSaveToTerminal(file);
-                        terminalTextArea.setText("");
-                        for (String textLine:fileText) {
-                            terminalTextArea.append(textLine + "\n");
-                        }
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-
-                }
+                controller.iterate((int) setNumberOfIterationsTextField.getValue());
             }
         });
+        saveButton = new JButton("Save");
 
-        terminalTextArea = new JTextArea("Terminal",22,15);
+
+        drawButton = new JButton("Draw");
+        drawButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.generateBoard(terminalTextArea.getText());
+            }
+        });
+        openFileButton = new JButton("Open file");
+
+        terminalTextArea = new JTextArea("Terminal", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -163,12 +162,14 @@ public class GUI {
 
     }
 
-    private void showWWBoard(int boardSize) {
+    private void showWWBoard() {
         boardPanel = new JPanel();
-        boardPanel.setLayout(new GridLayout(10, 10));
+        JPanel bombGrid = new JPanel();
+        boardPanel.add(bombGrid);
+        bombGrid.setLayout(new GridLayout(boardSize, boardSize));
         // boardPanel.setSize(650,650);
         //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
-        boardPanel.setVisible(true);
+        bombGrid.setVisible(true);
 
         Color blackColor = Color.BLACK;
         JButton gridButton = null;
@@ -177,11 +178,29 @@ public class GUI {
         for (int i = 0; i < boardSize * boardSize; i++) {
             gridButton = new JButton();
             gridButton.setBackground(blackColor);
-            gridButton.setPreferredSize(new Dimension(10, 10));
-            gridButton.setBorderPainted(true);
+            gridButton.setPreferredSize(new Dimension(9, 9));
+            gridButton.setBorderPainted(false);
             gridButton.setRolloverEnabled(false);
             jButtonList.add(gridButton);
-            boardPanel.add(gridButton);
+            bombGrid.add(gridButton);
+        }
+    }
+
+    public void drawBoard(int[][] board) {
+        int val;
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                val = board[j][i];
+                if (val == 0) {
+                jButtonList.get(i*boardSize+j).setBackground(Color.BLACK);
+                } else if (val == 1) {
+                    jButtonList.get(i*boardSize+j).setBackground(Color.ORANGE);
+                } else if (val == 2) {
+                    jButtonList.get(i*boardSize+j).setBackground(Color.BLUE);
+                } else if (val == 3) {
+                    jButtonList.get(i*boardSize+j).setBackground(Color.RED);
+                }
+            }
         }
     }
 
