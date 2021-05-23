@@ -94,6 +94,22 @@ public class GUI {
             }
         });
         saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int option = fileChooser.showOpenDialog(frame);
+                if(option == JFileChooser.APPROVE_OPTION){
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        WWIO.saveTerminalToFile(file,terminalTextArea.getText());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+
+                }
+            }
+        });
 
 
         drawButton = new JButton("Draw");

@@ -17,4 +17,13 @@ import java.io.File;
             reader.close();
             return records;
         }
+
+        public static void saveTerminalToFile(File file, String terminalText) throws  IOException{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(terminalText);
+            writer.close();
+        }
+
+
+
     }
