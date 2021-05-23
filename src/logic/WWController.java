@@ -38,7 +38,7 @@ public class WWController implements Runnable {
             try {
                 long sleepTime = iterationDelay - elapsedTime / 1000000;
                 //System.out.println("Sleep time: "+sleepTime);
-                if (sleepTime < 0) sleepTime = 0;
+                if (sleepTime < 0 || i==iterationsToDo-1) sleepTime = 0;
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();

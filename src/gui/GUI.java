@@ -68,8 +68,6 @@ public class GUI {
         showWWBoard();
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
-        jButtonList.get(0).setBackground(Color.ORANGE);
-        jButtonList.get(1).setBackground(Color.RED);
 
         frame.setVisible(true);
         frame.pack();
@@ -98,21 +96,11 @@ public class GUI {
             }
         });
 
-        saveButton = new JButton("Save current generation");
+        saveButton = new JButton("Save generation");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        WWIO.saveTerminalToFile(file,terminalTextArea.getText());
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
 
-                }
             }
         });
 
@@ -172,7 +160,7 @@ public class GUI {
             }
         });
 
-        terminalTextArea = new JTextArea("Terminal", 22, 15);
+        terminalTextArea = new JTextArea("Diode 5 5\nElectronHead 5 5", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
