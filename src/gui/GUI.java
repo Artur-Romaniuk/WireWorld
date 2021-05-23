@@ -28,6 +28,7 @@ public class GUI {
 
     private JButton startButton;
     private JButton saveButton;
+    private JButton saveTerminalButton;
     private JButton drawButton;
     private JButton openFileButton;
 
@@ -96,7 +97,8 @@ public class GUI {
                 controller.iterate((int) setNumberOfIterationsTextField.getValue());
             }
         });
-        saveButton = new JButton("Save");
+
+        saveButton = new JButton("Save current generation");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,6 +116,23 @@ public class GUI {
             }
         });
 
+        saveTerminalButton = new JButton("Save Terminal");
+        saveTerminalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int option = fileChooser.showOpenDialog(frame);
+                if(option == JFileChooser.APPROVE_OPTION){
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        WWIO.saveTerminalToFile(file,terminalTextArea.getText());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+
+                }
+            }
+        });
 
         drawButton = new JButton("Draw");
         drawButton.addActionListener(new ActionListener() {
@@ -198,16 +217,20 @@ public class GUI {
         gbc2.gridy = 0;
         controlSubPanel2.add(openFileButton, gbc2);
 
+        gbc2.gridx = 1;
+        gbc2.gridy = 1;
+        controlSubPanel2.add(saveTerminalButton, gbc2);
+
         errTextField = new JLabel();
         errTextField.setForeground(Color.RED);
         gbc2.gridwidth = 2;
         gbc2.gridx = 0;
-        gbc2.gridy = 1;
+        gbc2.gridy = 2;
         controlSubPanel2.add(errTextField, gbc2);
 
         gbc2.gridwidth = 2;
         gbc2.gridx = 0;
-        gbc2.gridy = 2;
+        gbc2.gridy = 3;
         controlSubPanel2.add(terminalScrollPanel, gbc2);
 
         GridBagConstraints gbc = new GridBagConstraints();
