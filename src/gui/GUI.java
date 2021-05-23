@@ -6,6 +6,8 @@ import logic.WWElementGroup;
 import logic.elements.simple.WWElementConductor;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +32,7 @@ public class GUI {
     private JButton openFileButton;
 
     private JSpinner setNumberOfIterationsTextField;
+    private JSlider setIterationSpeedSlider;
     private JTextArea terminalTextArea;                 //parser input
     private JLabel errTextField;                        //parser error output
 
@@ -141,6 +144,15 @@ public class GUI {
             }
         });
 
+        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL,1,599,300);
+        setIterationSpeedSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider source = (JSlider)e.getSource();
+                    controller.changeIterationSpeed((int)source.getValue());
+            }
+        });
+
         terminalTextArea = new JTextArea("Terminal", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
@@ -150,18 +162,28 @@ public class GUI {
 
         gbc1.gridx = 0;
         gbc1.gridy = 0;
+        controlSubPanel1.add(new JLabel("Iteration speed:"), gbc1);
+
+        gbc1.gridwidth = 2;
+        gbc1.gridx = 0;
+        gbc1.gridy = 1;
+        controlSubPanel1.add(setIterationSpeedSlider, gbc1);
+
+        gbc1.gridwidth = 1;
+        gbc1.gridx = 0;
+        gbc1.gridy = 2;
         controlSubPanel1.add(startButton, gbc1);
 
         gbc1.gridx = 1;
-        gbc1.gridy = 0;
+        gbc1.gridy = 2;
         controlSubPanel1.add(saveButton, gbc1);
 
         gbc1.gridx = 0;
-        gbc1.gridy = 1;
+        gbc1.gridy = 3;
         controlSubPanel1.add(new JLabel("Iterations:"), gbc1);
 
         gbc1.gridx = 1;
-        gbc1.gridy = 1;
+        gbc1.gridy = 3;
         controlSubPanel1.add(setNumberOfIterationsTextField, gbc1);
 
         GridBagConstraints gbc2 = new GridBagConstraints();
