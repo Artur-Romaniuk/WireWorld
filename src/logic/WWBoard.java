@@ -41,6 +41,7 @@ public class WWBoard {
     public void update() {
         nextGenElectronHeadList = new LinkedList<WWElementElectronHead>();
         nextGenElectronTailList = new LinkedList<WWElementElectronTail>();
+        System.out.println(elementGroup.getElectronHeadList().size());
         for (int i = 0; i < elementGroup.getElectronHeadList().size(); i++) {  //przejście po całej liście głów elektronów
             electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn()); //X i Y elektronu z listy
             electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
@@ -52,7 +53,6 @@ public class WWBoard {
         for (WWElementElectronTail electron:elementGroup.getElectronTailList()) {
             board[electron.getColumn()][electron.getRow()]=1;
         }
-
         elementGroup.setElectronTailList(nextGenElectronTailList);
         elementGroup.setElectronHeadList(nextGenElectronHeadList);  //zamiana starej listy na nową
     }
