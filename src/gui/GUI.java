@@ -1,5 +1,6 @@
 package gui;
 
+import io.WWIO;
 import logic.WWController;
 import logic.WWElementGroup;
 import logic.elements.simple.WWElementConductor;
@@ -8,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +104,26 @@ public class GUI {
             }
         });
         openFileButton = new JButton("Open file");
+        openFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int option = fileChooser.showOpenDialog(frame);
+                if(option == JFileChooser.APPROVE_OPTION){
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        List<String> fileText = WWIO.readFileAndSaveToTerminal(file);
+                        terminalTextArea.setText("");
+                        for (String textLine:fileText) {
+                            terminalTextArea.append(textLine + "\n");
+                        }
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+
+                }
+            }
+        });
 
         terminalTextArea = new JTextArea("Terminal", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);

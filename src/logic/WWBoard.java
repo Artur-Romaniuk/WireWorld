@@ -10,7 +10,6 @@ import static java.lang.Math.abs;
 
 public class WWBoard {
     private int[][] board;
-    private final int boardSize;
     private LinkedList<WWElementElectronHead> nextGenElectronHeadList;
     private LinkedList<WWElementElectronTail> nextGenElectronTailList;
     private WWElementGroup elementGroup;
@@ -22,7 +21,6 @@ public class WWBoard {
 
     public WWBoard(WWController controller, WWElementGroup elementGroup, int boardSize) {
         this.controller = controller;
-        this.boardSize = boardSize;
         board = new int[boardSize][boardSize];
         this.elementGroup = elementGroup;
         for (WWElementConductor conductor : elementGroup.getAllConductorList()) {
@@ -41,7 +39,9 @@ public class WWBoard {
     public void update() {
         nextGenElectronHeadList = new LinkedList<WWElementElectronHead>();
         nextGenElectronTailList = new LinkedList<WWElementElectronTail>();
+
         System.out.println(elementGroup.getElectronHeadList().size());
+
         for (int i = 0; i < elementGroup.getElectronHeadList().size(); i++) {  //przejście po całej liście głów elektronów
             electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn()); //X i Y elektronu z listy
             electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
@@ -73,6 +73,7 @@ public class WWBoard {
 
     private int countElectrons(WWElementConductor conductor) {
         int electronCount = 0;
+        WWElementElectronHead electron = new WWElementElectronHead(0,0);
         for (int i = 0; i < elementGroup.getElectronHeadList().size(); i++) {
             electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn());
             electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
