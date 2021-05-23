@@ -4,8 +4,12 @@ import gui.GUI;
 
 public class WWController implements Runnable {
     private GUI gui;
+
+    public WWBoard getBoard() {
+        return board;
+    }
+
     private WWBoard board;
-    private WWElementGroup group;
     private Thread drawerThread;
     private int iterationsToDo;
     private int iterationDelay;
@@ -37,7 +41,6 @@ public class WWController implements Runnable {
 
             try {
                 long sleepTime = iterationDelay - elapsedTime / 1000000;
-                //System.out.println("Sleep time: "+sleepTime);
                 if (sleepTime < 0 || i==iterationsToDo-1) sleepTime = 0;
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
