@@ -40,7 +40,7 @@ public class WWBoard {
         nextGenElectronHeadList = new LinkedList<WWElementElectronHead>();
         nextGenElectronTailList = new LinkedList<WWElementElectronTail>();
 
-        System.out.println(elementGroup.getElectronHeadList().size());
+       // System.out.println(elementGroup.getElectronHeadList().size());
 
         for (int i = 0; i < elementGroup.getElectronHeadList().size(); i++) {  //przejście po całej liście głów elektronów
             electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn()); //X i Y elektronu z listy

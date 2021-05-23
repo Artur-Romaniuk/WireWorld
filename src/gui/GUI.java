@@ -6,6 +6,8 @@ import logic.WWElementGroup;
 import logic.elements.simple.WWElementConductor;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,10 +28,12 @@ public class GUI {
 
     private JButton startButton;
     private JButton saveButton;
+    private JButton saveTerminalButton;
     private JButton drawButton;
     private JButton openFileButton;
 
     private JSpinner setNumberOfIterationsTextField;
+    private JSlider setIterationSpeedSlider;
     private JTextArea terminalTextArea;                 //parser input
     private JLabel errTextField;                        //parser error output
 
@@ -64,8 +68,6 @@ public class GUI {
         showWWBoard();
         mainPanel.add(boardPanel, BorderLayout.CENTER);
 
-        jButtonList.get(0).setBackground(Color.ORANGE);
-        jButtonList.get(1).setBackground(Color.RED);
 
         frame.setVisible(true);
         frame.pack();
@@ -93,8 +95,17 @@ public class GUI {
                 controller.iterate((int) setNumberOfIterationsTextField.getValue());
             }
         });
-        saveButton = new JButton("Save");
+
+        saveButton = new JButton("Save generation");
         saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        saveTerminalButton = new JButton("Save Terminal");
+        saveTerminalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -110,7 +121,6 @@ public class GUI {
                 }
             }
         });
-
 
         drawButton = new JButton("Draw");
         drawButton.addActionListener(new ActionListener() {
@@ -141,7 +151,16 @@ public class GUI {
             }
         });
 
-        terminalTextArea = new JTextArea("Terminal", 22, 15);
+        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL,1,599,300);
+        setIterationSpeedSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider source = (JSlider)e.getSource();
+                    controller.changeIterationSpeed((int)source.getValue());
+            }
+        });
+
+        terminalTextArea = new JTextArea("Diode 5 5\nElectronHead 5 5", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -150,18 +169,28 @@ public class GUI {
 
         gbc1.gridx = 0;
         gbc1.gridy = 0;
+        controlSubPanel1.add(new JLabel("Iteration speed:"), gbc1);
+
+        gbc1.gridwidth = 2;
+        gbc1.gridx = 0;
+        gbc1.gridy = 1;
+        controlSubPanel1.add(setIterationSpeedSlider, gbc1);
+
+        gbc1.gridwidth = 1;
+        gbc1.gridx = 0;
+        gbc1.gridy = 2;
         controlSubPanel1.add(startButton, gbc1);
 
         gbc1.gridx = 1;
-        gbc1.gridy = 0;
+        gbc1.gridy = 2;
         controlSubPanel1.add(saveButton, gbc1);
 
         gbc1.gridx = 0;
-        gbc1.gridy = 1;
+        gbc1.gridy = 3;
         controlSubPanel1.add(new JLabel("Iterations:"), gbc1);
 
         gbc1.gridx = 1;
-        gbc1.gridy = 1;
+        gbc1.gridy = 3;
         controlSubPanel1.add(setNumberOfIterationsTextField, gbc1);
 
         GridBagConstraints gbc2 = new GridBagConstraints();
@@ -176,16 +205,20 @@ public class GUI {
         gbc2.gridy = 0;
         controlSubPanel2.add(openFileButton, gbc2);
 
+        gbc2.gridx = 1;
+        gbc2.gridy = 1;
+        controlSubPanel2.add(saveTerminalButton, gbc2);
+
         errTextField = new JLabel();
         errTextField.setForeground(Color.RED);
         gbc2.gridwidth = 2;
         gbc2.gridx = 0;
-        gbc2.gridy = 1;
+        gbc2.gridy = 2;
         controlSubPanel2.add(errTextField, gbc2);
 
         gbc2.gridwidth = 2;
         gbc2.gridx = 0;
-        gbc2.gridy = 2;
+        gbc2.gridy = 3;
         controlSubPanel2.add(terminalScrollPanel, gbc2);
 
         GridBagConstraints gbc = new GridBagConstraints();
