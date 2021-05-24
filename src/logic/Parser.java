@@ -30,7 +30,7 @@ abstract class Parser {
                 try {
                     group.add(analyzeLine(line));
                 } catch (Exception e) {
-                    System.err.println(e.getMessage());
+                    throw e;
                 }
         }
         return group;
@@ -49,26 +49,26 @@ abstract class Parser {
         try {
             name = checkWWElemName(words[0]);                                   //sprawdź co to za element
         } catch (UnknownWWElementNameException e) {
-            throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+            throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
         }
 
         try {
             row = Integer.parseInt(words[1]);                                   //pobierz rząd
         } catch (IllegalArgumentException e) {
-            throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+            throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
         }
 
         try {
             column = Integer.parseInt(words[2]);                                 //pobierz kolumnę
         } catch (IllegalArgumentException e) {
-            throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+            throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
         }
 
         if (words.length == 4) {
             try {
                 direction = checkDirection(words[3]);
             } catch (UnknownWWElementDirectionException e) {
-                throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+                throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
             }
         }
 

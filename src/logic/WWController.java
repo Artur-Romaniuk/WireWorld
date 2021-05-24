@@ -20,8 +20,14 @@ public class WWController implements Runnable {
 
     public void generateBoard(String input) {
         isIterating = false;
-        board = new WWBoard(this, Parser.analyzeText(input), boardSize);
-        gui.drawBoard(board.getBoard());
+        try {
+            group = Parser.analyzeText(input);
+            board = new WWBoard(this, group, boardSize);
+            gui.drawBoard(board.getBoard());
+            gui.setErrTextFieldText("Board generated properly.");
+        }catch (Exception e){
+            gui.setErrTextFieldText(e.getMessage());
+        }
     }
 
     @Override

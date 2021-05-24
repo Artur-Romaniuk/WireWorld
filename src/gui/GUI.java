@@ -38,7 +38,7 @@ public class GUI {
     private JSpinner setNumberOfIterationsTextField;
     private JSlider setIterationSpeedSlider;
     private JTextArea terminalTextArea;                 //parser input
-    private JLabel errTextField;                        //parser error output
+    private JTextArea errTextField;                        //parser error output
 
     private Dimension size;
     private int width;
@@ -84,10 +84,12 @@ public class GUI {
 
         JPanel controlSubPanel1 = new JPanel();
         JPanel controlSubPanel2 = new JPanel();
+        JPanel controlSubPanel3 = new JPanel();
         JScrollPane terminalScrollPanel;
 
         controlSubPanel1.setLayout(new GridBagLayout());
         controlSubPanel2.setLayout(new GridBagLayout());
+        controlSubPanel3.setLayout(new GridBagLayout());
 
         SpinnerModel values = new SpinnerNumberModel(10, 1, 99999, 1);
         setNumberOfIterationsTextField = new JSpinner(values);
@@ -214,17 +216,20 @@ public class GUI {
         gbc2.gridy = 1;
         controlSubPanel2.add(saveTerminalButton, gbc2);
 
-        errTextField = new JLabel();
-        errTextField.setForeground(Color.RED);
-        gbc2.gridwidth = 2;
-        gbc2.gridx = 0;
-        gbc2.gridy = 2;
-        controlSubPanel2.add(errTextField, gbc2);
 
         gbc2.gridwidth = 2;
         gbc2.gridx = 0;
         gbc2.gridy = 3;
         controlSubPanel2.add(terminalScrollPanel, gbc2);
+
+        errTextField = new JTextArea(5,15);
+        errTextField.setWrapStyleWord(true);
+        errTextField.setLineWrap(true);
+        errTextField.setOpaque(false);
+        gbc2.gridwidth = 2;
+        gbc2.gridx = 0;
+        gbc2.gridy = 4;
+        controlSubPanel3.add(errTextField, gbc2);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -236,6 +241,9 @@ public class GUI {
         gbc.gridx = 0;
         gbc.gridy = 1;
         controlPanel.add(controlSubPanel2, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        controlPanel.add(controlSubPanel3, gbc);
 
     }
 
@@ -288,6 +296,10 @@ public class GUI {
                 }
             }
         }
+    }
+
+    public void setErrTextFieldText(String text){
+        errTextField.setText(text);
     }
 
 
