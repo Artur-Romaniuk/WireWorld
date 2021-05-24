@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
  */
 
 
-public class Parser {
+abstract class Parser {
 
     public static WWElementGroup analyzeText(String text) {    //główna metoda, zwraca listę WWElement z rzeczami do narysowania
         WWElementGroup group = new WWElementGroup();
