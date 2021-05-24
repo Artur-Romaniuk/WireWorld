@@ -33,6 +33,9 @@ import java.io.File;
             for (WWElement element:wwElementGroup.getElemList()) {
                 writer.append(element.toString()+"\n");
             }
+            for (WWElement element:wwElementGroup.getConductorList()) {
+                writer.append(element.toString()+"\n");
+            }
             for (WWElement element:wwElementGroup.getElectronHeadList()) {
                 writer.append(element.toString()+"\n");
             }

@@ -10,6 +10,7 @@ public class WWController implements Runnable {
     }
 
     private WWBoard board;
+    private WWElementGroup group;
     private Thread drawerThread;
     private int iterationsToDo;
     private int iterationDelay;
@@ -23,17 +24,22 @@ public class WWController implements Runnable {
     }
 
     public void generateBoard(String input) {
-
-        board = new WWBoard(this, Parser.analyzeText(input), boardSize);
-        gui.drawBoard(board.getBoard());
+        isIterating = false;
+        try {
+            group = Parser.analyzeText(input);
+            board = new WWBoard(this, group, boardSize);
+            gui.drawBoard(board.getBoard());
+            gui.setErrTextFieldText("");
+        }catch (Exception e){
+            gui.setErrTextFieldText(e.getMessage());
+        }
     }
 
     @Override
     public void run() {
         isIterating = true;
         for (int i = 0; i < iterationsToDo; i++) {
-
-
+            if(!isIterating)return;
             long startTime = System.nanoTime();
             board.update();
             gui.drawBoard(board.getBoard());
@@ -41,7 +47,8 @@ public class WWController implements Runnable {
 
             try {
                 long sleepTime = iterationDelay - elapsedTime / 1000000;
-                if (sleepTime < 0 || i==iterationsToDo-1) sleepTime = 0;
+                //System.out.println(sleepTime);
+                if (sleepTime < 0 || i == iterationsToDo - 1) sleepTime = 0;
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();

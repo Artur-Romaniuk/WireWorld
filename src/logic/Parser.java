@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
  */
 
 
-public class Parser {
+abstract class Parser {
 
     public static WWElementGroup analyzeText(String text) {    //główna metoda, zwraca listę WWElement z rzeczami do narysowania
         WWElementGroup group = new WWElementGroup();
@@ -30,7 +30,7 @@ public class Parser {
                 try {
                     group.add(analyzeLine(line));
                 } catch (Exception e) {
-                    System.err.println(e.getMessage());
+                    throw e;
                 }
         }
         return group;
@@ -49,61 +49,61 @@ public class Parser {
         try {
             name = checkWWElemName(words[0]);                                   //sprawdź co to za element
         } catch (UnknownWWElementNameException e) {
-            throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+            throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
         }
 
         try {
             row = Integer.parseInt(words[1]);                                   //pobierz rząd
         } catch (IllegalArgumentException e) {
-            throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+            throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
         }
 
         try {
             column = Integer.parseInt(words[2]);                                 //pobierz kolumnę
         } catch (IllegalArgumentException e) {
-            throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+            throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
         }
 
         if (words.length == 4) {
             try {
                 direction = checkDirection(words[3]);
             } catch (UnknownWWElementDirectionException e) {
-                throw new UnknownCommandException("Unknown command: " + textLine + " : " + e.getMessage());
+                throw new UnknownCommandException("Unknown command: " + textLine + " :\n " + e.getMessage());
             }
         }
 
         switch (name) {
             case ELECTRONHEAD:
                 result = new WWElementElectronHead(row, column);
-                System.out.println("New electron head: " + row + " " + column);
+                //System.out.println("New electron head: " + row + " " + column);
                 break;
             case ELECTRONTAIL:
                 result = new WWElementElectronTail(row, column);
-                System.out.println("New electron tail: " + row + " " + column);
+                //System.out.println("New electron tail: " + row + " " + column);
                 break;
             case CONDUCTOR:
                 result = new WWElementConductor(row, column);
-                System.out.println("New conductor: " + row + " " + column);
+                //System.out.println("New conductor: " + row + " " + column);
                 break;
             case DIODE:
                 result = new WWElementDiode(row, column, direction);
-                System.out.println("New diode: " + row + " " + column);
+                //System.out.println("New diode: " + row + " " + column);
                 break;
             case ORGATE:
                 result = new WWElementORGate(row, column, direction);
-                System.out.println("New OR gate: " + row + " " + column);
+                //System.out.println("New OR gate: " + row + " " + column);
                 break;
             case ANDGATE:
                 result = new WWElementANDGate(row, column, direction);
-                System.out.println("New AND gate: " + row + " " + column);
+                //System.out.println("New AND gate: " + row + " " + column);
                 break;
             case XORGATE:
                 result = new WWElementXORGate(row, column, direction);
-                System.out.println("New AND gate: " + row + " " + column);
+                //System.out.println("New AND gate: " + row + " " + column);
                 break;
             case FLIPFLOP:
                 result = new WWElementFlipFlop(row, column, direction);
-                System.out.println("New Flip Flop: " + row + " " + column);
+                //System.out.println("New Flip Flop: " + row + " " + column);
                 break;
         }
         return result;

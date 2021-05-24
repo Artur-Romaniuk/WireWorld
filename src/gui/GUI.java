@@ -9,8 +9,12 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +23,9 @@ public class GUI {
     private JPanel mainPanel;
     private JPanel controlPanel;
     private JPanel boardPanel;
+    JPanel mapGrid;
 
-    private List<JButton> jButtonList; //this is where jbuttons are stored, so you can change their properties later
+    private List<JPanel> jPanelList; //this is where jPanel are stored, so you can change their properties later
 
 
     private JButton startButton;
@@ -32,7 +37,7 @@ public class GUI {
     private JSpinner setNumberOfIterationsTextField;
     private JSlider setIterationSpeedSlider;
     private JTextArea terminalTextArea;                 //parser input
-    private JLabel errTextField;                        //parser error output
+    private JTextArea errTextField;                        //parser error output
 
     private Dimension size;
     private int width;
@@ -56,6 +61,7 @@ public class GUI {
         frame.add(mainPanel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("WireWorld");
+        frame.setResizable(false);
 
         mainPanel.setLayout(new BorderLayout());
 
@@ -77,12 +83,14 @@ public class GUI {
 
         JPanel controlSubPanel1 = new JPanel();
         JPanel controlSubPanel2 = new JPanel();
+        JPanel controlSubPanel3 = new JPanel();
         JScrollPane terminalScrollPanel;
 
         controlSubPanel1.setLayout(new GridBagLayout());
         controlSubPanel2.setLayout(new GridBagLayout());
+        controlSubPanel3.setLayout(new GridBagLayout());
 
-        SpinnerModel values = new SpinnerNumberModel(1, 0, 99999, 1);
+        SpinnerModel values = new SpinnerNumberModel(10, 1, 99999, 1);
         setNumberOfIterationsTextField = new JSpinner(values);
 
         startButton = new JButton("Start");
@@ -93,7 +101,7 @@ public class GUI {
             }
         });
 
-        saveButton = new JButton("Save generation");
+        saveButton = new JButton("Save Generation");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,6 +144,7 @@ public class GUI {
                 controller.generateBoard(terminalTextArea.getText());
             }
         });
+
         openFileButton = new JButton("Open file");
         openFileButton.addActionListener(new ActionListener() {
             @Override
@@ -158,16 +167,16 @@ public class GUI {
             }
         });
 
-        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL,1,599,300);
+        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 599, 300);
         setIterationSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                JSlider source = (JSlider)e.getSource();
-                    controller.changeIterationSpeed((int)source.getValue());
+                JSlider source = (JSlider) e.getSource();
+                controller.changeIterationSpeed((int) source.getValue());
             }
         });
 
-        terminalTextArea = new JTextArea("Diode 5 5\nElectronHead 5 5", 22, 15);
+        terminalTextArea = new JTextArea("Diode 10 10\nElectronHead 10 10", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -216,17 +225,20 @@ public class GUI {
         gbc2.gridy = 1;
         controlSubPanel2.add(saveTerminalButton, gbc2);
 
-        errTextField = new JLabel();
-        errTextField.setForeground(Color.RED);
-        gbc2.gridwidth = 2;
-        gbc2.gridx = 0;
-        gbc2.gridy = 2;
-        controlSubPanel2.add(errTextField, gbc2);
 
         gbc2.gridwidth = 2;
         gbc2.gridx = 0;
         gbc2.gridy = 3;
         controlSubPanel2.add(terminalScrollPanel, gbc2);
+
+        errTextField = new JTextArea(5,15);
+        errTextField.setWrapStyleWord(true);
+        errTextField.setLineWrap(true);
+        errTextField.setOpaque(false);
+        gbc2.gridwidth = 2;
+        gbc2.gridx = 0;
+        gbc2.gridy = 4;
+        controlSubPanel3.add(errTextField, gbc2);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -238,30 +250,42 @@ public class GUI {
         gbc.gridx = 0;
         gbc.gridy = 1;
         controlPanel.add(controlSubPanel2, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        controlPanel.add(controlSubPanel3, gbc);
 
     }
 
     private void showWWBoard() {
         boardPanel = new JPanel();
-        JPanel bombGrid = new JPanel();
-        boardPanel.add(bombGrid);
-        bombGrid.setLayout(new GridLayout(boardSize, boardSize));
-        // boardPanel.setSize(650,650);
-        //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
-        bombGrid.setVisible(true);
+        mapGrid = new JPanel();
+        JPanel gridButton = null;
+        jPanelList = new ArrayList<JPanel>();
 
         Color blackColor = Color.BLACK;
-        JButton gridButton = null;
-        jButtonList = new ArrayList<JButton>();
+        Color gridColor = new Color(20,20,20);
 
-        for (int i = 0; i < boardSize * boardSize; i++) {
-            gridButton = new JButton();
-            gridButton.setBackground(blackColor);
-            gridButton.setPreferredSize(new Dimension(9, 9));
-            gridButton.setBorderPainted(false);
-            gridButton.setRolloverEnabled(false);
-            jButtonList.add(gridButton);
-            bombGrid.add(gridButton);
+        boardPanel.add(mapGrid);
+        mapGrid.setLayout(new GridLayout(boardSize, boardSize,1,1));
+        mapGrid.setBackground(gridColor);
+        // boardPanel.setSize(650,650);
+        //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
+        mapGrid.setVisible(true);
+
+
+
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                gridButton = new JPanel();
+                gridButton.setBackground(blackColor);
+                gridButton.setPreferredSize(new Dimension(9, 9));
+               // gridButton.setBorderPainted(false);
+               // gridButton.setRolloverEnabled(false);
+
+                gridButton.setToolTipText(i+" "+j);
+                jPanelList.add(gridButton);
+                mapGrid.add(gridButton);
+            }
         }
     }
 
@@ -271,16 +295,21 @@ public class GUI {
             for (int j = 0; j < boardSize; j++) {
                 val = board[j][i];
                 if (val == 0) {
-                jButtonList.get(i*boardSize+j).setBackground(Color.BLACK);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.BLACK);
                 } else if (val == 1) {
-                    jButtonList.get(i*boardSize+j).setBackground(Color.ORANGE);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.ORANGE);
                 } else if (val == 2) {
-                    jButtonList.get(i*boardSize+j).setBackground(Color.BLUE);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.BLUE);
                 } else if (val == 3) {
-                    jButtonList.get(i*boardSize+j).setBackground(Color.RED);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.RED);
                 }
             }
+            mapGrid.repaint();
         }
+    }
+
+    public void setErrTextFieldText(String text){
+        errTextField.setText(text);
     }
 
 
