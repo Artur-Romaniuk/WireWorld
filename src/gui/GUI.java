@@ -25,8 +25,9 @@ public class GUI {
     private JPanel mainPanel;
     private JPanel controlPanel;
     private JPanel boardPanel;
+    JPanel mapGrid;
 
-    private List<JButton> jButtonList; //this is where jbuttons are stored, so you can change their properties later
+    private List<JPanel> jPanelList; //this is where jPanel are stored, so you can change their properties later
 
 
     private JButton startButton;
@@ -249,33 +250,33 @@ public class GUI {
 
     private void showWWBoard() {
         boardPanel = new JPanel();
-        JPanel bombGrid = new JPanel();
-        JButton gridButton = null;
-        jButtonList = new ArrayList<JButton>();
+        mapGrid = new JPanel();
+        JPanel gridButton = null;
+        jPanelList = new ArrayList<JPanel>();
 
         Color blackColor = Color.BLACK;
         Color gridColor = new Color(20,20,20);
 
-        boardPanel.add(bombGrid);
-        bombGrid.setLayout(new GridLayout(boardSize, boardSize,1,1));
-        bombGrid.setBackground(gridColor);
+        boardPanel.add(mapGrid);
+        mapGrid.setLayout(new GridLayout(boardSize, boardSize,1,1));
+        mapGrid.setBackground(gridColor);
         // boardPanel.setSize(650,650);
         //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
-        bombGrid.setVisible(true);
+        mapGrid.setVisible(true);
 
 
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                gridButton = new JButton();
+                gridButton = new JPanel();
                 gridButton.setBackground(blackColor);
                 gridButton.setPreferredSize(new Dimension(9, 9));
-                gridButton.setBorderPainted(false);
-                gridButton.setRolloverEnabled(false);
+               // gridButton.setBorderPainted(false);
+               // gridButton.setRolloverEnabled(false);
 
                 gridButton.setToolTipText(i+" "+j);
-                jButtonList.add(gridButton);
-                bombGrid.add(gridButton);
+                jPanelList.add(gridButton);
+                mapGrid.add(gridButton);
             }
         }
     }
@@ -286,15 +287,16 @@ public class GUI {
             for (int j = 0; j < boardSize; j++) {
                 val = board[j][i];
                 if (val == 0) {
-                    jButtonList.get(i * boardSize + j).setBackground(Color.BLACK);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.BLACK);
                 } else if (val == 1) {
-                    jButtonList.get(i * boardSize + j).setBackground(Color.ORANGE);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.ORANGE);
                 } else if (val == 2) {
-                    jButtonList.get(i * boardSize + j).setBackground(Color.BLUE);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.BLUE);
                 } else if (val == 3) {
-                    jButtonList.get(i * boardSize + j).setBackground(Color.RED);
+                    jPanelList.get(i * boardSize + j).setBackground(Color.RED);
                 }
             }
+            mapGrid.repaint();
         }
     }
 
