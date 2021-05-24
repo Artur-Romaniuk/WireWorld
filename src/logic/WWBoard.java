@@ -13,13 +13,16 @@ public class WWBoard {
     private int[][] board;
     private LinkedList<WWElementElectronHead> nextGenElectronHeadList;
     private LinkedList<WWElementElectronTail> nextGenElectronTailList;
+
+    public WWElementGroup getElementGroup() {
+        return elementGroup;
+    }
+
     private WWElementGroup elementGroup;
 
 
-    private WWController controller;
 
     public WWBoard(WWController controller, WWElementGroup elementGroup, int boardSize) {
-        this.controller = controller;
         board = new int[boardSize][boardSize];
         this.elementGroup = elementGroup;
         for (WWElementConductor conductor : elementGroup.getAllConductorList()) {

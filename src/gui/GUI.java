@@ -2,8 +2,6 @@ package gui;
 
 import io.WWIO;
 import logic.WWController;
-import logic.WWElementGroup;
-import logic.elements.simple.WWElementConductor;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -107,7 +105,17 @@ public class GUI {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int option = fileChooser.showOpenDialog(frame);
+                if(option == JFileChooser.APPROVE_OPTION){
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        WWIO.saveIterationToFile(file, controller.getBoard().getElementGroup());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
 
+                }
             }
         });
 
@@ -117,10 +125,10 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if (option == JFileChooser.APPROVE_OPTION) {
+                if(option == JFileChooser.APPROVE_OPTION){
                     File file = fileChooser.getSelectedFile();
                     try {
-                        WWIO.saveTerminalToFile(file, terminalTextArea.getText());
+                        WWIO.saveTerminalToFile(file,terminalTextArea.getText());
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -143,12 +151,12 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if (option == JFileChooser.APPROVE_OPTION) {
+                if(option == JFileChooser.APPROVE_OPTION){
                     File file = fileChooser.getSelectedFile();
                     try {
                         List<String> fileText = WWIO.readFileAndSaveToTerminal(file);
                         terminalTextArea.setText("");
-                        for (String textLine : fileText) {
+                        for (String textLine:fileText) {
                             terminalTextArea.append(textLine + "\n");
                         }
                     } catch (IOException ioException) {

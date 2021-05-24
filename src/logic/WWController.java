@@ -4,6 +4,11 @@ import gui.GUI;
 
 public class WWController implements Runnable {
     private GUI gui;
+
+    public WWBoard getBoard() {
+        return board;
+    }
+
     private WWBoard board;
     private WWElementGroup group;
     private Thread drawerThread;
