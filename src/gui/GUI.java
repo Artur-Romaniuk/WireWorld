@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class GUI {
         controlSubPanel1.setLayout(new GridBagLayout());
         controlSubPanel2.setLayout(new GridBagLayout());
 
-        SpinnerModel values = new SpinnerNumberModel(1, 0, 99999, 1);
+        SpinnerModel values = new SpinnerNumberModel(10, 1, 99999, 1);
         setNumberOfIterationsTextField = new JSpinner(values);
 
         startButton = new JButton("Start");
@@ -99,7 +100,7 @@ public class GUI {
             }
         });
 
-        saveButton = new JButton("Save generation");
+        saveButton = new JButton("Save Generation");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,6 +133,7 @@ public class GUI {
                 controller.generateBoard(terminalTextArea.getText());
             }
         });
+
         openFileButton = new JButton("Open file");
         openFileButton.addActionListener(new ActionListener() {
             @Override
