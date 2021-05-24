@@ -24,7 +24,7 @@ public class WWController implements Runnable {
             group = Parser.analyzeText(input);
             board = new WWBoard(this, group, boardSize);
             gui.drawBoard(board.getBoard());
-            gui.setErrTextFieldText("Board generated properly.");
+            gui.setErrTextFieldText("");
         }catch (Exception e){
             gui.setErrTextFieldText(e.getMessage());
         }
