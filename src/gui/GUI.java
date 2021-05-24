@@ -61,6 +61,7 @@ public class GUI {
         frame.add(mainPanel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("WireWorld");
+        frame.setResizable(false);
 
         mainPanel.setLayout(new BorderLayout());
 
@@ -162,7 +163,7 @@ public class GUI {
             }
         });
 
-        terminalTextArea = new JTextArea("Diode 5 5\nElectronHead 5 5", 22, 15);
+        terminalTextArea = new JTextArea("Diode 10 10\nElectronHead 10 10", 22, 15);
         terminalScrollPanel = new JScrollPane(terminalTextArea);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -239,15 +240,20 @@ public class GUI {
     private void showWWBoard() {
         boardPanel = new JPanel();
         JPanel bombGrid = new JPanel();
+        JButton gridButton = null;
+        jButtonList = new ArrayList<JButton>();
+
+        Color blackColor = Color.BLACK;
+        Color gridColor = new Color(20,20,20);
+
         boardPanel.add(bombGrid);
-        bombGrid.setLayout(new GridLayout(boardSize, boardSize));
+        bombGrid.setLayout(new GridLayout(boardSize, boardSize,1,1));
+        bombGrid.setBackground(gridColor);
         // boardPanel.setSize(650,650);
         //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
         bombGrid.setVisible(true);
 
-        Color blackColor = Color.BLACK;
-        JButton gridButton = null;
-        jButtonList = new ArrayList<JButton>();
+
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
