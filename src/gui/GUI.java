@@ -11,6 +11,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.AbstractList;
@@ -110,10 +112,10 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
+                if (option == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     try {
-                        WWIO.saveTerminalToFile(file,terminalTextArea.getText());
+                        WWIO.saveTerminalToFile(file, terminalTextArea.getText());
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -135,12 +137,12 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
+                if (option == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     try {
                         List<String> fileText = WWIO.readFileAndSaveToTerminal(file);
                         terminalTextArea.setText("");
-                        for (String textLine:fileText) {
+                        for (String textLine : fileText) {
                             terminalTextArea.append(textLine + "\n");
                         }
                     } catch (IOException ioException) {
@@ -151,12 +153,12 @@ public class GUI {
             }
         });
 
-        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL,1,599,300);
+        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 599, 300);
         setIterationSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                JSlider source = (JSlider)e.getSource();
-                    controller.changeIterationSpeed((int)source.getValue());
+                JSlider source = (JSlider) e.getSource();
+                controller.changeIterationSpeed((int) source.getValue());
             }
         });
 
@@ -247,14 +249,18 @@ public class GUI {
         JButton gridButton = null;
         jButtonList = new ArrayList<JButton>();
 
-        for (int i = 0; i < boardSize * boardSize; i++) {
-            gridButton = new JButton();
-            gridButton.setBackground(blackColor);
-            gridButton.setPreferredSize(new Dimension(9, 9));
-            gridButton.setBorderPainted(false);
-            gridButton.setRolloverEnabled(false);
-            jButtonList.add(gridButton);
-            bombGrid.add(gridButton);
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                gridButton = new JButton();
+                gridButton.setBackground(blackColor);
+                gridButton.setPreferredSize(new Dimension(9, 9));
+                gridButton.setBorderPainted(false);
+                gridButton.setRolloverEnabled(false);
+
+                gridButton.setToolTipText(i+" "+j);
+                jButtonList.add(gridButton);
+                bombGrid.add(gridButton);
+            }
         }
     }
 
@@ -264,13 +270,13 @@ public class GUI {
             for (int j = 0; j < boardSize; j++) {
                 val = board[j][i];
                 if (val == 0) {
-                jButtonList.get(i*boardSize+j).setBackground(Color.BLACK);
+                    jButtonList.get(i * boardSize + j).setBackground(Color.BLACK);
                 } else if (val == 1) {
-                    jButtonList.get(i*boardSize+j).setBackground(Color.ORANGE);
+                    jButtonList.get(i * boardSize + j).setBackground(Color.ORANGE);
                 } else if (val == 2) {
-                    jButtonList.get(i*boardSize+j).setBackground(Color.BLUE);
+                    jButtonList.get(i * boardSize + j).setBackground(Color.BLUE);
                 } else if (val == 3) {
-                    jButtonList.get(i*boardSize+j).setBackground(Color.RED);
+                    jButtonList.get(i * boardSize + j).setBackground(Color.RED);
                 }
             }
         }
