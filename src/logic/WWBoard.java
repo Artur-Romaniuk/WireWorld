@@ -1,5 +1,6 @@
 package logic;
 
+import logic.elements.WWElement;
 import logic.elements.simple.WWElementConductor;
 import logic.elements.simple.WWElementElectronHead;
 import logic.elements.simple.WWElementElectronTail;
@@ -14,8 +15,6 @@ public class WWBoard {
     private LinkedList<WWElementElectronTail> nextGenElectronTailList;
     private WWElementGroup elementGroup;
 
-    private WWElementElectronHead electron;
-    private WWElementConductor conductor;
 
     private WWController controller;
 
@@ -32,8 +31,6 @@ public class WWBoard {
         for (WWElementElectronTail electronTail:elementGroup.getElectronTailList()) {
             board[electronTail.getColumn()][electronTail.getRow()] = 3;
         }
-        electron = new WWElementElectronHead(0,0);
-        conductor = new WWElementConductor(0,0);
     }
 
     public void update() {
@@ -42,9 +39,7 @@ public class WWBoard {
 
        // System.out.println(elementGroup.getElectronHeadList().size());
 
-        for (int i = 0; i < elementGroup.getElectronHeadList().size(); i++) {  //przejście po całej liście głów elektronów
-            electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn()); //X i Y elektronu z listy
-            electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
+        for (WWElementElectronHead electron : elementGroup.getElectronHeadList()) {  //przejście po całej liście głów elektronów
             findProperConductors(electron); //znajdź nowe miejsce na planszy
 
             board[electron.getColumn()][electron.getRow()] = 3; //ta glowa staje się ogonem
@@ -58,9 +53,7 @@ public class WWBoard {
     }
 
     private void findProperConductors(WWElementElectronHead electron) {
-        for (int i = 0; i < elementGroup.getAllConductorList().size(); i++) { //przejście po wszystkich przewodnikach
-            conductor.setColumn(elementGroup.getAllConductorList().get(i).getColumn()); //x i y przewodnika
-            conductor.setRow(elementGroup.getAllConductorList().get(i).getRow());
+        for (WWElementConductor conductor : elementGroup.getAllConductorList()) { //przejście po wszystkich przewodnikach
             if (abs(electron.getColumn() - conductor.getColumn()) < 2 && abs(electron.getRow() - conductor.getRow()) < 2) {
                 //jeżeli sąsiadują
                 if (countElectrons(conductor) < 3 && board[conductor.getColumn()][conductor.getRow()] == 1) {
@@ -73,10 +66,7 @@ public class WWBoard {
 
     private int countElectrons(WWElementConductor conductor) {
         int electronCount = 0;
-        WWElementElectronHead electron = new WWElementElectronHead(0,0);
-        for (int i = 0; i < elementGroup.getElectronHeadList().size(); i++) {
-            electron.setColumn(elementGroup.getElectronHeadList().get(i).getColumn());
-            electron.setRow(elementGroup.getElectronHeadList().get(i).getRow());
+        for (WWElementElectronHead electron : elementGroup.getElectronHeadList()) {
             if (abs(electron.getColumn() - conductor.getColumn()) < 2 && abs(electron.getRow() - conductor.getRow()) < 2) {
                 electronCount++;
             }
