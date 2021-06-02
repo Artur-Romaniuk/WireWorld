@@ -9,12 +9,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,12 +103,12 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
+                if (option == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     try {
                         WWIO.saveIterationToFile(file, controller.getBoard().getElementGroup());
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        new FileErrorExceptionDialog(ioException);
                     }
 
                 }
@@ -125,12 +121,12 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
+                if (option == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     try {
-                        WWIO.saveTerminalToFile(file,terminalTextArea.getText());
+                        WWIO.saveTerminalToFile(file, terminalTextArea.getText());
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        new FileErrorExceptionDialog(ioException);
                     }
 
                 }
@@ -151,28 +147,28 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 int option = fileChooser.showOpenDialog(frame);
-                if(option == JFileChooser.APPROVE_OPTION){
+                if (option == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     try {
                         List<String> fileText = WWIO.readFileAndSaveToTerminal(file);
                         terminalTextArea.setText("");
-                        for (String textLine:fileText) {
+                        for (String textLine : fileText) {
                             terminalTextArea.append(textLine + "\n");
                         }
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        new FileErrorExceptionDialog(ioException);
                     }
 
                 }
             }
         });
 
-        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 599, 300);
+        setIterationSpeedSlider = new JSlider(SwingConstants.HORIZONTAL, controller.getMinSleepTime(), controller.getMaxSleepTime(), (controller.getMinSleepTime() + controller.getMaxSleepTime()) / 2);
         setIterationSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JSlider source = (JSlider) e.getSource();
-                controller.changeIterationSpeed((int) source.getValue());
+                controller.setIterationSpeed((int) source.getValue());
             }
         });
 
@@ -231,7 +227,7 @@ public class GUI {
         gbc2.gridy = 3;
         controlSubPanel2.add(terminalScrollPanel, gbc2);
 
-        errTextField = new JTextArea(5,15);
+        errTextField = new JTextArea(5, 15);
         errTextField.setWrapStyleWord(true);
         errTextField.setLineWrap(true);
         errTextField.setOpaque(false);
@@ -263,15 +259,14 @@ public class GUI {
         jPanelList = new ArrayList<JPanel>();
 
         Color blackColor = Color.BLACK;
-        Color gridColor = new Color(20,20,20);
+        Color gridColor = new Color(20, 20, 20);
 
         boardPanel.add(mapGrid);
-        mapGrid.setLayout(new GridLayout(boardSize, boardSize,1,1));
+        mapGrid.setLayout(new GridLayout(boardSize, boardSize, 1, 1));
         mapGrid.setBackground(gridColor);
         // boardPanel.setSize(650,650);
         //boardPanel.setMaximumSize(new Dimension(3*width/4, 3*height/2));
         mapGrid.setVisible(true);
-
 
 
         for (int i = 0; i < boardSize; i++) {
@@ -279,10 +274,10 @@ public class GUI {
                 gridButton = new JPanel();
                 gridButton.setBackground(blackColor);
                 gridButton.setPreferredSize(new Dimension(9, 9));
-               // gridButton.setBorderPainted(false);
-               // gridButton.setRolloverEnabled(false);
+                // gridButton.setBorderPainted(false);
+                // gridButton.setRolloverEnabled(false);
 
-                gridButton.setToolTipText(i+" "+j);
+                gridButton.setToolTipText(i + " " + j);
                 jPanelList.add(gridButton);
                 mapGrid.add(gridButton);
             }
@@ -308,9 +303,7 @@ public class GUI {
         }
     }
 
-    public void setErrTextFieldText(String text){
+    public void setErrTextFieldText(String text) {
         errTextField.setText(text);
     }
-
-
 }
