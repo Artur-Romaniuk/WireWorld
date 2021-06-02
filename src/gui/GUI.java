@@ -108,7 +108,7 @@ public class GUI {
                     try {
                         WWIO.saveIterationToFile(file, controller.getBoard().getElementGroup());
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        new FileErrorExceptionDialog(ioException);
                     }
 
                 }
@@ -126,7 +126,7 @@ public class GUI {
                     try {
                         WWIO.saveTerminalToFile(file, terminalTextArea.getText());
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        new FileErrorExceptionDialog(ioException);
                     }
 
                 }
@@ -156,7 +156,7 @@ public class GUI {
                             terminalTextArea.append(textLine + "\n");
                         }
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        new FileErrorExceptionDialog(ioException);
                     }
 
                 }
@@ -306,6 +306,4 @@ public class GUI {
     public void setErrTextFieldText(String text) {
         errTextField.setText(text);
     }
-
-
 }

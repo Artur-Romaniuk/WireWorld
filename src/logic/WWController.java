@@ -17,7 +17,7 @@ public class WWController implements Runnable {
     private int minSleepTime;
     private int maxSleepTime;
     private final int boardSize;
-    private boolean isIterating;
+    private volatile boolean isIterating;
 
     public WWController() {
         boardSize = 100;
@@ -51,7 +51,7 @@ public class WWController implements Runnable {
 
             try {
                 long sleepTime = iterationDelay - elapsedTime / 1000000;
-                System.out.println(sleepTime);
+                //System.out.println(sleepTime);
                 if (sleepTime < minSleepTime || i == iterationsToDo - 1) sleepTime = minSleepTime;
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
