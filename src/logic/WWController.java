@@ -14,12 +14,16 @@ public class WWController implements Runnable {
     private Thread drawerThread;
     private int iterationsToDo;
     private int iterationDelay;
+    private int minSleepTime;
+    private int maxSleepTime;
     private final int boardSize;
     private boolean isIterating;
 
     public WWController() {
         boardSize = 100;
         iterationDelay = 300;
+        minSleepTime = 0;
+        maxSleepTime = 600;
         gui = new GUI(this, boardSize);
     }
 
@@ -30,7 +34,7 @@ public class WWController implements Runnable {
             board = new WWBoard(this, group, boardSize);
             gui.drawBoard(board.getBoard());
             gui.setErrTextFieldText("");
-        }catch (Exception e){
+        } catch (Exception e) {
             gui.setErrTextFieldText(e.getMessage());
         }
     }
@@ -39,7 +43,7 @@ public class WWController implements Runnable {
     public void run() {
         isIterating = true;
         for (int i = 0; i < iterationsToDo; i++) {
-            if(!isIterating)return;
+            if (!isIterating) return;
             long startTime = System.nanoTime();
             board.update();
             gui.drawBoard(board.getBoard());
@@ -47,8 +51,8 @@ public class WWController implements Runnable {
 
             try {
                 long sleepTime = iterationDelay - elapsedTime / 1000000;
-                //System.out.println(sleepTime);
-                if (sleepTime < 0 || i == iterationsToDo - 1) sleepTime = 0;
+                System.out.println(sleepTime);
+                if (sleepTime < minSleepTime || i == iterationsToDo - 1) sleepTime = minSleepTime;
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -65,8 +69,17 @@ public class WWController implements Runnable {
         }
     }
 
-    public void changeIterationSpeed(int speed) {
-        iterationDelay = 615 - speed;
+    public void setIterationSpeed(int speed) {
+        iterationDelay = maxSleepTime - speed;
+    }
+
+
+    public int getMinSleepTime() {
+        return minSleepTime;
+    }
+
+    public int getMaxSleepTime() {
+        return maxSleepTime;
     }
 
 }
